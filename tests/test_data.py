@@ -4,7 +4,7 @@ ce_census_survey = '''
   "type": "uk.gov.ons.edc.eq:surveyresponse",
   "origin": "uk.gov.ons.edc.eq",
   "version": "0.0.1",
-  "survey_id": "0",
+  "survey_id": "census",
   "collection": {
     "instrument_id": "hh2016",
     "exercise_sid": "hfjdskf",

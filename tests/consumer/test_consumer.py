@@ -12,7 +12,7 @@ class TestConsumer(unittest.TestCase):
     def test_get_processor_common_software(self):
         survey = json.loads(common_software_survey)
         processor = self.consumer.get_processor(survey)
-        self.assertIsNotNone(processor)
+        self.assertIsNone(processor)
 
     def test_get_processor_census(self):
         survey = json.loads(ce_census_survey)

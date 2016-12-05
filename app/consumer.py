@@ -43,7 +43,7 @@ class Consumer(AsyncConsumer):
             logger.error("ResponseProcessor failed", exception=e, tx_id=processor.tx_id)
 
     def get_processor(self, survey):
-        if survey.get('survey_id') and survey['survey_id'] == '0':
+        if survey.get('survey_id') == 'census':
             return CTPProcessor(logger, survey)
         else:
             logger.error("Missing or not supported survey id")
