@@ -20,9 +20,9 @@ class CTPProcessor(object):
                 self.tx_id = self.survey['tx_id']
                 self.logger = self.logger.bind(tx_id=self.tx_id)
 
-    def deliver_file(self, data):
-        folder = get_ftp_folder(self.survey)
-        return process_file_to_ftp(folder, data)
+    def deliver_file(self, filename, data):
+        folder = get_ftp_folder(data)
+        return process_file_to_ftp(folder, filename, data)
 
     def process(self):
         filename = '{}.json()'.format(get_sequence_no())
