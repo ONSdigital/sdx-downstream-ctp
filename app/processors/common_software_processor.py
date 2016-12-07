@@ -32,14 +32,14 @@ class CTPProcessor(object):
 
         return response.content
 
-    def deliver_zip(self, zip_contents):
+    def deliver_file(self, data):
         folder = get_ftp_folder(self.survey)
-        return process_file_to_ftp(folder, zip_contents)
+        return process_file_to_ftp(folder, data)
 
     def process(self):
-        zip_contents = self.transform()
+        transformed = self.transform()
 
-        if zip_contents is None:
+        if transformed is None:
             return False
 
-        return self.deliver_zip(zip_contents)
+        return self.deliver_file(transformed)
