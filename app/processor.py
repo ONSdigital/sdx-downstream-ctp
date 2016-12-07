@@ -1,5 +1,4 @@
-from app import settings
-from app.helpers.request_helper import remote_call, response_ok, get_sequence_no
+from app.helpers.request_helper import get_sequence_no
 from app.helpers.ftp_helper import get_ftp_folder, process_file_to_ftp
 
 
@@ -21,25 +20,15 @@ class CTPProcessor(object):
                 self.tx_id = self.survey['tx_id']
                 self.logger = self.logger.bind(tx_id=self.tx_id)
 
-    def get_url(self):
-        sequence_no = get_sequence_no()
-        return "{0}/census/{1}".format(settings.SDX_TRANSFORM_CTP_URL, sequence_no)
-
-    def transform(self):
-        response = remote_call(self.get_url(), json=self.survey)
-        if not response or not response_ok(response):
-            return None
-
-        return response.content
-
     def deliver_file(self, data):
         folder = get_ftp_folder(self.survey)
         return process_file_to_ftp(folder, data)
 
     def process(self):
-        transformed = self.transform()
+        filename = '{}.json()'.format(get_sequence_no())
+        data = self.survey
 
-        if transformed is None:
+        if data is None:
             return False
 
-        return self.deliver_file(transformed)
+        return self.deliver_file(filename, data)
