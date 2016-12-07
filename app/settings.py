@@ -16,7 +16,6 @@ APP_TMP = os.path.join(APP_ROOT, 'tmp')
 
 # Default to true, cast to boolean
 SDX_STORE_URL = os.getenv("SDX_STORE_URL", "http://sdx-store:5000")
-SDX_TRANSFORM_CTP_URL = os.getenv("SDX_TRANSFORM_CTP_URL", "http://sdx-transform-ctp:5000")
 SDX_TRANSFORM_TESTFORM_URL = os.getenv("SDX_TRANSFORM_TESTFORM_URL", "http://sdx-transform-testform:5000")
 SDX_SEQUENCE_URL = os.getenv("SDX_SEQUENCE_URL", "http://sdx-sequence:5000/ctp-sequence")
 
