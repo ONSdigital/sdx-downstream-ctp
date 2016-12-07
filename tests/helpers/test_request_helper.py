@@ -3,7 +3,7 @@ from requests import Response
 from app.helpers import request_helper
 
 
-class TestSurveyProcessor(unittest.TestCase):
+class TestRequestHelper(unittest.TestCase):
 
     def test_response_ok_200_return_true(self):
         response = Response()

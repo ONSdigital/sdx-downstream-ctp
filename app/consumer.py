@@ -1,7 +1,7 @@
 from app.settings import logger
 from app.async_consumer import AsyncConsumer
 from app.helpers.request_helper import get_doc_from_store
-from app.processors.census_processor import CTPProcessor
+from .processor import CTPProcessor
 from app import settings
 
 

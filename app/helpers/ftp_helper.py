@@ -16,13 +16,11 @@ def connect_to_ftp():
     return ftp
 
 
-def process_file_to_ftp(folder, filename):
+def process_file_to_ftp(folder, filename, data):
     try:
         settings.logger.debug("Processing file", folder=folder, filename=filename)
         ftp = connect_to_ftp()
-        f = open(filename)
-        deliver_binary_to_ftp(ftp, folder, filename, f.read())
-        f.close()
+        deliver_binary_to_ftp(ftp, folder, filename, bytes(data, 'UTF-8'))
         ftp.quit()
         return True
 

@@ -5,7 +5,7 @@ from app.helpers import ftp_helper
 from tests.test_data import census_survey
 
 
-class TestSurveyProcessor(unittest.TestCase):
+class TestFTPHelper(unittest.TestCase):
 
     def test_get_ftp_folder_no_heartbeat(self):
         survey = json.loads(census_survey)
