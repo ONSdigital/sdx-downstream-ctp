@@ -5,7 +5,7 @@ import requests
 from requests.packages.urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
 
-LOGGING_FORMAT = "%(asctime)s|%(levelname)s: sdx-downstream: %(message)s"
+LOGGING_FORMAT = "%(asctime)s|%(levelname)s: sdx-downstream-ctp: %(message)s"
 LOGGING_LEVEL = logging.getLevelName(os.getenv('LOGGING_LEVEL', 'DEBUG'))
 
 logging.basicConfig(level=LOGGING_LEVEL, format=LOGGING_FORMAT)
