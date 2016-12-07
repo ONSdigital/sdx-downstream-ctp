@@ -1,5 +1,4 @@
 from app import settings
-import zipfile
 import io
 from ftplib import FTP
 
@@ -17,25 +16,18 @@ def connect_to_ftp():
     return ftp
 
 
-def process_zip_to_ftp(folder, zip_contents):
+def process_file_to_ftp(folder, filename):
     try:
-        z = zipfile.ZipFile(io.BytesIO(zip_contents))
-        settings.logger.debug("Unzipped contents", filelist=z.namelist())
-
+        settings.logger.debug("Processing file", folder=folder, filename=filename)
         ftp = connect_to_ftp()
-        for filename in z.namelist():
-            if filename.endswith('/'):
-                continue
-
-            settings.logger.debug("Processing file from zip", folder=folder, filename=filename)
-            edc_file = z.open(filename)
-            deliver_binary_to_ftp(ftp, folder, filename, edc_file.read())
-
+        f = open(filename)
+        deliver_binary_to_ftp(ftp, folder, filename, f.read())
+        f.close()
         ftp.quit()
         return True
 
-    except (RuntimeError, zipfile.BadZipfile) as e:
-        settings.logger.error("Bad zip file", exception=e)
+    except (RuntimeError) as e:
+        settings.logger.error("Exception processing file", exception=e)
         return False
 
 
