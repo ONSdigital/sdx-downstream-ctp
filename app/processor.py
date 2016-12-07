@@ -26,7 +26,7 @@ class CTPProcessor(object):
         return process_file_to_ftp(folder, filename, data)
 
     def process(self):
-        filename = '{}.json()'.format(get_sequence_no())
+        filename = '{}.json'.format(get_sequence_no())
         data = json.dumps(self.survey)
 
         if data is None:

@@ -20,7 +20,7 @@ def process_file_to_ftp(folder, filename, data):
     try:
         settings.logger.debug("Processing file", folder=folder, filename=filename)
         ftp = connect_to_ftp()
-        deliver_binary_to_ftp(ftp, folder, filename, data)
+        deliver_binary_to_ftp(ftp, folder, filename, bytes(data, 'UTF-8'))
         ftp.quit()
         return True
 
