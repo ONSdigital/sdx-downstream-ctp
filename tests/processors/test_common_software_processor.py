@@ -4,7 +4,7 @@ import json
 import logging
 from structlog import wrap_logger
 from app.processors.common_software_processor import CTPProcessor
-from tests.test_data import common_software_survey
+from tests.test_data import census_survey
 
 logger = wrap_logger(logging.getLogger(__name__))
 
@@ -12,7 +12,7 @@ logger = wrap_logger(logging.getLogger(__name__))
 class TestCTPProcessor(unittest.TestCase):
 
     def setUp(self):
-        survey = json.loads(common_software_survey)
+        survey = json.loads(census_survey)
         self.processor = CTPProcessor(logger, survey)
 
     def test_transform_failure(self):
