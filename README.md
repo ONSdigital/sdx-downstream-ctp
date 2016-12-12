@@ -22,6 +22,4 @@ The following envioronment variables can be set:
 
 `SDX_STORE_URL` - The URL of the sdx-store service, defaults to http://sdx-store:5000
 
-`SDX_TRANSFORM_CTP_URL` - The URL of the sdx-transform-cs service, defaults to http://sdx-transform-ctp:5000
-
 `SDX_SEQUENCE_URL` - The URL of the sdx-transform-cs service, defaults to http://sdx-sequence:5000
