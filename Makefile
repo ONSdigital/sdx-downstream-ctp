@@ -1,4 +1,4 @@
-build: check-dependencies
+build:
 	pip install -r requirements.txt
 
 test:
