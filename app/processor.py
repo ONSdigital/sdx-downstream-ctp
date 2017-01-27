@@ -32,4 +32,12 @@ class CTPProcessor(object):
         if data is None:
             return False
 
-        return self.deliver_file(filename, data)
+        # Attempt to deliver the real file and, if successful, send
+        # a .completed after it
+        success = self.deliver_file(filename, data)
+        if success is True:
+            completed_filename = filename + ".completed"
+            self.logger.info("Sending 'completed file'", filename=completed_filename)
+            success = self.deliver_file(completed_filename, "")
+
+        return success
