@@ -1,5 +1,6 @@
 from app.helpers.request_helper import get_sequence_no
 import json
+from app import settings
 
 
 class CTPProcessor(object):
@@ -22,8 +23,8 @@ class CTPProcessor(object):
                 self.logger = self.logger.bind(tx_id=self.tx_id)
 
     def deliver_file(self, filename, data):
-        folder = get_ftp_folder(self.survey)
-        return self.ftp.deliver_binary(folder, filename, data)
+        folder = self.get_ftp_folder(self.survey)
+        return self.ftp.deliver_binary(folder, filename, b'data')
 
     def process(self):
         filename = '{}.json'.format(get_sequence_no())
@@ -41,3 +42,9 @@ class CTPProcessor(object):
             success = self.deliver_file(completed_filename, "")
 
         return success
+
+    def get_ftp_folder(self, survey):
+        if 'heartbeat' in survey and survey['heartbeat'] is True:
+            return settings.FTP_HEARTBEAT_FOLDER
+        else:
+            return settings.FTP_FOLDER
