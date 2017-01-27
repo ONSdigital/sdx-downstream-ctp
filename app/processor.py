@@ -24,7 +24,7 @@ class CTPProcessor(object):
 
     def deliver_file(self, filename, data):
         folder = self.get_ftp_folder(self.survey)
-        return self.ftp.deliver_binary(folder, filename, b'data')
+        return self.ftp.deliver_binary(folder, filename, data.encode('utf-8'))
 
     def process(self):
         filename = '{}.json'.format(get_sequence_no())
@@ -33,15 +33,15 @@ class CTPProcessor(object):
         if data is None:
             return False
 
-        # Attempt to deliver the real file and, if successful, send
+        # Attempt to deliver the real file and send
         # a .completed after it
-        success = self.deliver_file(filename, data)
-        if success is True:
-            completed_filename = filename + ".completed"
-            self.logger.info("Sending 'completed file'", filename=completed_filename)
-            success = self.deliver_file(completed_filename, "")
+        self.deliver_file(filename, data)
 
-        return success
+        completed_filename = filename + ".completed"
+        self.logger.info("Sending 'completed file'", filename=completed_filename)
+        self.deliver_file(completed_filename, "")
+
+        return
 
     def get_ftp_folder(self, survey):
         if 'heartbeat' in survey and survey['heartbeat'] is True:
