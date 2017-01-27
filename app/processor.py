@@ -1,15 +1,15 @@
 from app.helpers.request_helper import get_sequence_no
-from app.helpers.ftp_helper import get_ftp_folder, process_file_to_ftp
 import json
 
 
 class CTPProcessor(object):
 
-    def __init__(self, logger, survey):
+    def __init__(self, logger, survey, ftpconn):
         self.logger = logger
         self.survey = survey
         self.tx_id = None
         self.setup_logger()
+        self.ftp = ftpconn
 
     def setup_logger(self):
         if self.survey:
@@ -23,7 +23,7 @@ class CTPProcessor(object):
 
     def deliver_file(self, filename, data):
         folder = get_ftp_folder(self.survey)
-        return process_file_to_ftp(folder, filename, data)
+        return self.ftp.deliver_binary(folder, filename, data)
 
     def process(self):
         filename = '{}.json'.format(get_sequence_no())
