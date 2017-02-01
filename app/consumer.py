@@ -28,7 +28,7 @@ class Consumer(AsyncConsumer):
                 self.acknowledge_message(basic_deliver.delivery_tag, tx_id=processor.tx_id)
 
         except Exception as e:
-            logger.error("ResponseProcessor failed", exception=e, tx_id=processor.tx_id)
+            logger.error("ResponseProcessor failed", exception=e, tx_id=document['tx_id'])
 
     def get_processor(self, survey):
         if survey.get('survey_id') == 'census':
