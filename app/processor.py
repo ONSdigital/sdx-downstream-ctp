@@ -1,6 +1,7 @@
 from app.helpers.request_helper import get_sequence_no
 import json
 from app import settings
+import re
 
 
 class CTPProcessor(object):
@@ -37,7 +38,9 @@ class CTPProcessor(object):
         # a .completed after it
         self.deliver_file(filename, data)
 
-        completed_filename = filename + ".completed"
+        completed_filename = filename
+        p = re.compile('.json$')
+        p.sub('.json', completed_filename)
         self.logger.info("Sending 'completed file'", filename=completed_filename)
         self.deliver_file(completed_filename, "")
 
