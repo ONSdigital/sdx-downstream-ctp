@@ -2,7 +2,6 @@ import unittest
 from unittest.mock import MagicMock
 import mock
 import json
-# from requests import Response
 import logging
 from structlog import wrap_logger
 from app.processor import CTPProcessor
