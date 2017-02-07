@@ -26,7 +26,7 @@ FTP_PASS = os.getenv('FTP_PASS')
 FTP_FOLDER = os.getenv('FTP_FOLDER', '/')
 FTP_HEARTBEAT_FOLDER = os.getenv('FTP_HEARTBEAT_FOLDER', '/heartbeat')
 
-RABBIT_QUEUE = os.getenv('RABBITMQ_QUEUE', 'sdx-ctp-survey-notifications')
+RABBIT_QUEUE = os.getenv('CTP_NOTIFICATIONS_QUEUE', 'sdx-ctp-survey-notifications')
 RABBIT_EXCHANGE = os.getenv('RABBITMQ_EXCHANGE', 'message')
 
 RABBIT_URL = 'amqp://{user}:{password}@{hostname}:{port}/{vhost}'.format(
