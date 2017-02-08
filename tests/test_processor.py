@@ -13,7 +13,7 @@ logger = wrap_logger(logging.getLogger(__name__))
 ftp = SDXFTP(logger, "", "", "")
 
 
-class TestCommonSoftwareProcessor(unittest.TestCase):
+class TestCTPProcessor(unittest.TestCase):
 
     def setUp(self):
         survey = json.loads(census_survey)
