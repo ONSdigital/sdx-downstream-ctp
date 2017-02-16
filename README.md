@@ -1,5 +1,7 @@
 # sdx-downstream-ctp
 
+[![Build Status](https://travis-ci.org/ONSdigital/sdx-downstream-ctp.svg?branch=develop)](https://travis-ci.org/ONSdigital/sdx-downstream-ctp)
+
 The sdx-downstream-ctp app is used within the Office for National Statistics (ONS) for consuming decrypted Survey Data Exchange (SDX) Surveys from sdx-store and delivering them to CTP.
 
 ## Installation
@@ -21,7 +23,5 @@ It's also possible to install within a container using docker. From the sdx-down
 The following envioronment variables can be set:
 
 `SDX_STORE_URL` - The URL of the sdx-store service, defaults to http://sdx-store:5000
-
-`SDX_TRANSFORM_CTP_URL` - The URL of the sdx-transform-cs service, defaults to http://sdx-transform-ctp:5000
 
 `SDX_SEQUENCE_URL` - The URL of the sdx-transform-cs service, defaults to http://sdx-sequence:5000

@@ -5,7 +5,7 @@ import requests
 from requests.packages.urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
 
-LOGGING_FORMAT = "%(asctime)s|%(levelname)s: sdx-downstream: %(message)s"
+LOGGING_FORMAT = "%(asctime)s|%(levelname)s: sdx-downstream-ctp: %(message)s"
 LOGGING_LEVEL = logging.getLevelName(os.getenv('LOGGING_LEVEL', 'DEBUG'))
 
 logging.basicConfig(level=LOGGING_LEVEL, format=LOGGING_FORMAT)
@@ -16,22 +16,17 @@ APP_TMP = os.path.join(APP_ROOT, 'tmp')
 
 # Default to true, cast to boolean
 SDX_STORE_URL = os.getenv("SDX_STORE_URL", "http://sdx-store:5000")
-SDX_TRANSFORM_CTP_URL = os.getenv("SDX_TRANSFORM_CTP_URL", "http://sdx-transform-ctp:5000")
-SDX_TRANSFORM_TESTFORM_URL = os.getenv("SDX_TRANSFORM_TESTFORM_URL", "http://sdx-transform-testform:5000")
-SDX_SEQUENCE_URL = os.getenv("SDX_SEQUENCE_URL", "http://sdx-sequence:5000/ctp-sequence")
+SDX_SEQUENCE_URL = os.getenv("SDX_SEQUENCE_URL", "http://sdx-sequence:5000")
 
-FTP_HOST = os.getenv('FTP_HOST', 'pure-ftpd')
-FTP_USER = os.getenv('FTP_USER')
-FTP_PASS = os.getenv('FTP_PASS')
+FTP_HOST = os.getenv('CTP_FTP_HOST', 'pure-ftpd')
+FTP_USER = os.getenv('CTP_FTP_USER')
+FTP_PASS = os.getenv('CTP_FTP_PASS')
 
-FTP_FOLDER = os.getenv('FTP_FOLDER', '/')
-FTP_HEARTBEAT_FOLDER = os.getenv('FTP_HEARTBEAT_FOLDER', '/heartbeat')
+FTP_FOLDER = os.getenv('CTP_FTP_FOLDER', '/')
+FTP_HEARTBEAT_FOLDER = os.getenv('CTP_FTP_HEARTBEAT_FOLDER', '/heartbeat')
 
-RABBIT_QUEUE = os.getenv('RABBITMQ_QUEUE', 'sdx-ctp-survey-notifications')
+RABBIT_QUEUE = os.getenv('CTP_NOTIFICATIONS_QUEUE', 'sdx-ctp-survey-notifications')
 RABBIT_EXCHANGE = os.getenv('RABBITMQ_EXCHANGE', 'message')
-
-QUEUE_RETRY_DELAY_IN_MS = 20000
-QUEUE_MAX_MESSAGE_DELIVERIES = 3
 
 RABBIT_URL = 'amqp://{user}:{password}@{hostname}:{port}/{vhost}'.format(
     hostname=os.getenv('RABBITMQ_HOST', 'rabbit'),

@@ -1,53 +1,58 @@
 from app.settings import logger
 from app.async_consumer import AsyncConsumer
 from app.helpers.request_helper import get_doc_from_store
-from app.processors.common_software_processor import CTPProcessor
+from .processor import CTPProcessor
 from app import settings
+from app.helpers.sdxftp import SDXFTP
+from app.helpers.exceptions import BadMessageError, RetryableError
 
 
 def get_delivery_count_from_properties(properties):
+    """
+    Returns the delivery count for a message from the rabbit queue. The
+    value is auto-set by rabbitmq.
+    """
     delivery_count = 0
     if properties.headers and 'x-delivery-count' in properties.headers:
         delivery_count = properties.headers['x-delivery-count']
-
-    return delivery_count
+    return delivery_count + 1
 
 
 class Consumer(AsyncConsumer):
 
+    def __init__(self):
+        self._ftp = SDXFTP(logger, settings.FTP_HOST, settings.FTP_USER, settings.FTP_PASS)
+        super(Consumer, self).__init__()
+
     def on_message(self, unused_channel, basic_deliver, properties, body):
-        logger.info('Received message', delivery_tag=basic_deliver.delivery_tag, app_id=properties.app_id, body=body.decode("utf-8"))
 
         delivery_count = get_delivery_count_from_properties(properties)
-        delivery_count += 1
+
+        logger.info(
+            'Received message',
+            queue=self.QUEUE,
+            delivery_tag=basic_deliver.delivery_tag,
+            delivery_count=delivery_count,
+            app_id=properties.app_id
+        )
+
+        mongo_id = body.decode("utf-8")
+        document = get_doc_from_store(mongo_id)
+        processor = CTPProcessor(logger, document, self._ftp)
 
         try:
-            mongo_id = body.decode("utf-8")
-            document = get_doc_from_store(mongo_id)
+            processor.process()
+            self.acknowledge_message(basic_deliver.delivery_tag, tx_id=processor.tx_id)
+            logger.info("Processed successfully", tx_id=processor.tx_id)
 
-            processor = self.get_processor(document)
+        except BadMessageError as e:
+            # If it's a bad message then we have to reject it
+            self.reject_message(basic_deliver.delivery_tag, tx_id=processor.tx_id)
+            logger.error("Bad message", action="rejected", exception=e, delivery_count=delivery_count, tx_id=processor.tx_id)
 
-            if processor:
-                processed_ok = processor.process()
-
-                if processed_ok:
-                    self.acknowledge_message(basic_deliver.delivery_tag, tx_id=processor.tx_id)
-                else:
-                    if delivery_count == settings.QUEUE_MAX_MESSAGE_DELIVERIES:
-                        logger.error("Reached maximum number of retries", tx_id=processor.tx_id, delivery_count=delivery_count, message=mongo_id)
-                        self.reject_message(basic_deliver.delivery_tag, tx_id=processor.tx_id)
-                    else:
-                        pass
-
-        except Exception as e:
-            logger.error("ResponseProcessor failed", exception=e, tx_id=processor.tx_id)
-
-    def get_processor(self, survey):
-        if survey.get('survey_id') == 'census':
-            return CTPProcessor(logger, survey)
-        else:
-            logger.error("Missing or not supported survey id")
-            return None
+        except (RetryableError, Exception) as e:
+            self.nack_message(basic_deliver.delivery_tag, tx_id=processor.tx_id)
+            logger.error("Failed to process", action="nack for retry", exception=e, delivery_count=delivery_count, tx_id=processor.tx_id)
 
 
 def main():
