@@ -49,7 +49,7 @@ class SFTP:
         return rv
 
     @staticmethod
-    def transfer(cmds, user, host, port, root, quiet=True):
+    def transfer(cmds, user, host, port, quiet=True):
         """
         Connects to an sftp server and plays a sequence of commands.
 
@@ -71,13 +71,31 @@ class SFTP:
         self.passwd = passwd
         self.port = port
 
-    @staticmethod
+    def deliver_binary(self, folder, filename, data):
+        with tempfile.NamedTemporaryFile(dir="tmp") as locn:
+            locn.write(data)
+            locn.flush()
+            cmds = [
+                "cd {0}\n".format(folder),
+                "put {0} {1}\n".format(locn.name, filename),
+                "bye\n"
+            ]
+            rv = self.transfer(
+                cmds, user=self.user, host=self.host, port=self.port, quiet=True
+            )
+        if rv == 0:
+            self.logger.info("Successfully delivered file to FTP", host=self.host)
+            return True
+        else:
+            self.logger.error("Failed to deliver file to FTP", host=self.host)
+            return False
+
     def unzip_and_deliver(self, folder, zip_contents):
         with tempfile.TemporaryDirectory(dir="tmp") as locn:
             with zipfile.ZipFile(io.BytesIO(zip_contents)) as payload:
                 payload.extractall(locn)
-                cmds = SFTP.operations(locn)
-                rv = SFTP.transfer(
+                cmds = self.operations(locn)
+                rv = self.transfer(
                     cmds, user=self.user, host=self.host, port=self.port, quiet=True
                 )
         if rv == 0:
@@ -90,8 +108,8 @@ class SFTP:
 
 def run():
     """
-    Reads a ZIP file from stdin and copies the contents to the correct locations on an
-    SFTP server.
+    Reads a ZIP file or text file from stdin and copies the contents to the correct
+    location on an SFTP server.
 
     Parameters are configured to match the test container in sdx-compose.
 
@@ -100,15 +118,35 @@ def run():
         ["ssh-keygen", "-f", os.path.expanduser("~/.ssh/known_hosts"), "-R", "[0.0.0.0]:2222"]
     )
 
-    with tempfile.TemporaryDirectory() as locn:
+    user = "testuser"
+    host = "0.0.0.0"
+    port = 2222
+    root = "public"
+
+    try:
         with zipfile.ZipFile(sys.stdin.buffer) as payload:
-            payload.extractall(locn)
-            cmds = SFTP.operations(locn, home="public", mkdirs=True)
-            rv = SFTP.transfer(
-                cmds, user="testuser", host="0.0.0.0", port=2222, root="public", quiet=False
-            )
-            return rv
+            with tempfile.TemporaryDirectory() as locn:
+                payload.extractall(locn)
+                cmds = SFTP.operations(locn, home="public", mkdirs=True)
+                rv = SFTP.transfer(
+                    cmds, user="testuser", host="0.0.0.0", port=2222, quiet=False
+                )
+    except zipfile.BadZipFile:
+        # Assume a text file
+        sys.stdin.buffer.seek(0)
+        data = sys.stdin.buffer.read()
+        with tempfile.NamedTemporaryFile() as locn:
+            locn.write(data)
+            locn.flush()
+            cmds = [
+                "cd {0}\n".format(root),
+                "put {0} {1}\n".format(locn.name, "data.txt"),
+                "bye\n"
+            ]
+            rv = SFTP.transfer(cmds, user, host, port, quiet=False)
+    return rv
 
 
 if __name__ == "__main__":
-    run()
+    rv = run()
+    sys.exit(rv)
