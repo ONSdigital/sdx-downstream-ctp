@@ -3,7 +3,7 @@ from app.async_consumer import AsyncConsumer
 from app.helpers.request_helper import get_doc_from_store
 from .processor import CTPProcessor
 from app import settings
-from app.helpers.sdxftp import SDXFTP
+from app.helpers.sftp import SFTP
 from app.helpers.exceptions import BadMessageError, RetryableError
 
 
@@ -21,7 +21,7 @@ def get_delivery_count_from_properties(properties):
 class Consumer(AsyncConsumer):
 
     def __init__(self):
-        self._ftp = SDXFTP(logger, settings.FTP_HOST, settings.FTP_USER, settings.FTP_PASS)
+        self._ftp = SFTP(logger, settings.FTP_HOST, settings.FTP_USER, settings.FTP_PASS)
         super(Consumer, self).__init__()
 
     def on_message(self, unused_channel, basic_deliver, properties, body):
