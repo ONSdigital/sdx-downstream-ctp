@@ -83,12 +83,10 @@ class SFTP:
             rv = self.transfer(
                 cmds, user=self.user, host=self.host, port=self.port, quiet=True
             )
-        if rv == 0:
-            self.logger.info("Successfully delivered file to FTP", host=self.host)
-            return True
-        else:
-            self.logger.error("Failed to deliver file to FTP", host=self.host)
-            return False
+        if rv != 0:
+            msg = "Failed to deliver file to FTP"
+            self.logger.error(msg, host=self.host)
+            raise UserWarning(msg)
 
     def unzip_and_deliver(self, folder, zip_contents):
         with tempfile.TemporaryDirectory(dir="tmp") as locn:
@@ -98,12 +96,10 @@ class SFTP:
                 rv = self.transfer(
                     cmds, user=self.user, host=self.host, port=self.port, quiet=True
                 )
-        if rv == 0:
-            self.logger.info("Successfully delivered zip to FTP", host=self.host)
-            return True
-        else:
-            self.logger.error("Failed to deliver zip to FTP", host=self.host)
-            return False
+        if rv != 0:
+            msg = "Failed to deliver file to FTP"
+            self.logger.error(msg, host=self.host)
+            raise UserWarning(msg)
 
 
 def run():
