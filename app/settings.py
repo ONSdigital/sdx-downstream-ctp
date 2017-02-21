@@ -29,6 +29,9 @@ FTP_HEARTBEAT_FOLDER = os.getenv('CTP_FTP_HEARTBEAT_FOLDER', '/heartbeat')
 SFTP_HOST = os.getenv("SFTP_HOST", "127.0.0.1")
 SFTP_PORT = os.getenv("SFTP_PORT", "22")
 SFTP_USER = os.getenv('SFTP_USER', pwd.getpwuid(os.getuid())[0])
+SFTP_PRIVATEKEY_FILENAME = os.getenv(
+    "SFTP_PRIVATEKEY_FILENAME", os.path.expanduser(os.path.join("~", ".ssh", "id_rsa"))
+)
 SFTP_PUBLICKEY_FILENAME = os.getenv(
     "SFTP_PUBLICKEY_FILENAME", os.path.expanduser(os.path.join("~", ".ssh", "id_rsa.pub"))
 )

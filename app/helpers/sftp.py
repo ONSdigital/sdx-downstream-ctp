@@ -49,14 +49,14 @@ class SFTP:
         return rv
 
     @staticmethod
-    def transfer(cmds, user, host, port, pk=None, quiet=True):
+    def transfer(cmds, user, host, port, privKey=None, quiet=True):
         """
         Connects to an sftp server and plays a sequence of commands.
 
         """
         args = ["sftp", "-P", str(port), "{user}@{host}".format(user=user, host=host)]
-        if pk is not None:
-            args[2:3] = [str(port), "-i", pk]
+        if privKey is not None:
+            args[2:3] = [str(port), "-i", privKey]
         kwargs = {"stdout": subprocess.DEVNULL, "stderr": subprocess.DEVNULL} if quiet else {}
         with subprocess.Popen(args, stdin=subprocess.PIPE, **kwargs) as proc:
             for cmd in cmds:
@@ -64,11 +64,11 @@ class SFTP:
             proc.stdin.write("bye\n".encode("utf-8"))
         return proc.returncode
 
-    def __init__(self, logger, host, user, pk=None, port=22):
+    def __init__(self, logger, host, user, privKey=None, port=22):
         self.logger = logger
         self.host = host
         self.user = user
-        self.pk = pk
+        self.privKey = privKey
         self.port = port
 
     def deliver_binary(self, folder, filename, data):
@@ -82,7 +82,7 @@ class SFTP:
             ]
             rv = self.transfer(
                 cmds, user=self.user, host=self.host, port=self.port,
-                pk=self.pk, quiet=True
+                privKey=self.privKey, quiet=True
             )
         if rv != 0:
             msg = "Failed to deliver file to FTP"
@@ -96,7 +96,7 @@ class SFTP:
                 cmds = self.operations(locn)
                 rv = self.transfer(
                     cmds, user=self.user, host=self.host, port=self.port,
-                    pk=self.pk, quiet=True
+                    privKey=self.privKey, quiet=True
                 )
         if rv != 0:
             msg = "Failed to deliver file to FTP"
