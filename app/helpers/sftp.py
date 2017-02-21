@@ -56,7 +56,7 @@ class SFTP:
         """
         args = [
             "sftp", "-o", "ControlPersist=true", "-o", "ControlMaster=auto",
-            "-o", "ControlPath=~/.ssh/ssh-%r@%h:%p", "-P", str(port),
+            "-o", "ControlPath=~/.ssh/ssh-%r@%h:%p", "-b", "-", "-P", str(port),
             "{user}@{host}".format(user=user, host=host)
         ]
         if privKey is not None:
