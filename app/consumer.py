@@ -23,7 +23,7 @@ class Consumer(AsyncConsumer):
     def __init__(self):
         self._ftp = SFTP(
             logger, settings.SFTP_HOST, settings.SFTP_USER,
-            port=int(settings.SFT_PORT), privKey=settings.SFTP_PRIVATEKEY_FILENAME
+            port=int(settings.SFTP_PORT), privKey=settings.SFTP_PRIVATEKEY_FILENAME
         )
         super(Consumer, self).__init__()
 
