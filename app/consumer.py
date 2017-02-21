@@ -21,7 +21,8 @@ def get_delivery_count_from_properties(properties):
 class Consumer(AsyncConsumer):
 
     def __init__(self):
-        self._ftp = SFTP(logger, settings.FTP_HOST, settings.FTP_USER, settings.FTP_PASS)
+        self._ftp = SFTP(logger, settings.SFTP_HOST, settings.SFTP_USER,
+        port=int(settings.SFT_PORT), pk=settings.SFTP_PUBLICKEY_FILENAME)
         super(Consumer, self).__init__()
 
     def on_message(self, unused_channel, basic_deliver, properties, body):
