@@ -54,9 +54,13 @@ class SFTP:
         Connects to an sftp server and plays a sequence of commands.
 
         """
-        args = ["sftp", "-P", str(port), "{user}@{host}".format(user=user, host=host)]
+        args = [
+            "sftp", "-o", "ControlPersist=true", "-o", "ControlMaster=auto",
+            "-o", "ControlPath=~/.ssh/ssh-%r@%h:%p", "-P", str(port),
+            "{user}@{host}".format(user=user, host=host)
+        ]
         if privKey is not None:
-            args[2:3] = [str(port), "-i", privKey]
+            args[-2:-1] = [str(port), "-i", privKey]
         kwargs = {"stdout": subprocess.DEVNULL, "stderr": subprocess.DEVNULL} if quiet else {}
         with subprocess.Popen(args, stdin=subprocess.PIPE, **kwargs) as proc:
             for cmd in cmds:
