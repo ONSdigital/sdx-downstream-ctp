@@ -1,6 +1,7 @@
 from app.settings import logger, session, SDX_SEQUENCE_URL, SDX_STORE_URL
 from requests.packages.urllib3.exceptions import MaxRetryError
 from requests.exceptions import ConnectionError
+from app.helpers.exceptions import RetryableError
 
 
 def remote_call(url, json=None):
@@ -17,10 +18,10 @@ def remote_call(url, json=None):
 
     except MaxRetryError:
         logger.error("Max retries exceeded (5)", request_url=url)
-        return None
+        raise RetryableError("Max retries exceeded")
     except ConnectionError:
         logger.error("Connection error", request_url=url)
-        return None
+        raise RetryableError("Connection error")
 
 
 def response_ok(response):
