@@ -17,10 +17,10 @@ def remote_call(url, json=None):
 
     except MaxRetryError:
         logger.error("Max retries exceeded (5)", request_url=url)
-        return False
+        return None
     except ConnectionError:
         logger.error("Connection error", request_url=url)
-        return False
+        return None
 
 
 def response_ok(response):
