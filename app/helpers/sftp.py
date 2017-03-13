@@ -75,7 +75,6 @@ class SFTP:
 
             if log is not None:
                 log.debug(args)
-                log.debug(proc.stdout.read())
                 log.debug(proc.stderr.read())
 
         return proc.returncode
