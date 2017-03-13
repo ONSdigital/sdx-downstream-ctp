@@ -49,7 +49,7 @@ class SFTP:
         return rv
 
     @staticmethod
-    def transfer(cmds, user, host, port, privKey=None, quiet=True):
+    def transfer(cmds, user, host, port, privKey=None, quiet=True, log=None):
         """
         Connects to an sftp server and plays a sequence of commands.
 
@@ -59,13 +59,25 @@ class SFTP:
             "-o", "ControlPath=~/.ssh/ssh-%r@%h:%p", "-b", "-", "-P", str(port),
             "{user}@{host}".format(user=user, host=host)
         ]
+
         if privKey is not None:
             args[-2:-1] = [str(port), "-i", privKey]
-        kwargs = {"stdout": subprocess.DEVNULL, "stderr": subprocess.DEVNULL} if quiet else {}
+
+        if quiet:
+            kwargs = {"stdout": subprocess.DEVNULL, "stderr": subprocess.DEVNULL}
+        else:
+            kwargs = {"stdout": subprocess.PIPE, "stderr": subprocess.PIPE}
+
         with subprocess.Popen(args, stdin=subprocess.PIPE, **kwargs) as proc:
             for cmd in cmds:
                 proc.stdin.write(cmd.encode("utf-8"))
             proc.stdin.write("bye\n".encode("utf-8"))
+
+        if log is not None:
+            log.debug(args)
+            log.debug(proc.stdout.read())
+            log.debug(proc.stderr.read())
+
         return proc.returncode
 
     def __init__(self, logger, host, user, privKey=None, port=22):
@@ -86,7 +98,7 @@ class SFTP:
             ]
             rv = self.transfer(
                 cmds, user=self.user, host=self.host, port=self.port,
-                privKey=self.privKey, quiet=True
+                privKey=self.privKey, quiet=False, log=self.logger
             )
         if rv != 0:
             msg = "Failed to deliver file to FTP"
@@ -100,7 +112,7 @@ class SFTP:
                 cmds = self.operations(locn)
                 rv = self.transfer(
                     cmds, user=self.user, host=self.host, port=self.port,
-                    privKey=self.privKey, quiet=True
+                    privKey=self.privKey, quiet=False, log=self.logger
                 )
         if rv != 0:
             msg = "Failed to deliver file to FTP"
