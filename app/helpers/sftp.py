@@ -73,10 +73,10 @@ class SFTP:
                 proc.stdin.write(cmd.encode("utf-8"))
             proc.stdin.write("bye\n".encode("utf-8"))
 
-        if log is not None:
-            log.debug(args)
-            log.debug(proc.stdout.read())
-            log.debug(proc.stderr.read())
+            if log is not None:
+                log.debug(args)
+                log.debug(proc.stdout.read())
+                log.debug(proc.stderr.read())
 
         return proc.returncode
 
