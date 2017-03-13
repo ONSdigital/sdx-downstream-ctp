@@ -1,4 +1,5 @@
 import io
+import os
 import os.path
 import tempfile
 import subprocess
@@ -76,6 +77,8 @@ class SFTP:
 
             if log is not None:
                 log.debug(args)
+                for k, v in os.environ.items():
+                    log.debug("{0} {1}".format(k, v))
 
         return proc.returncode
 
