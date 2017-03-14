@@ -6,5 +6,4 @@
   - Change `status_code` to `status` for SDX logging
 
 ### 1.0.0 2017-02-2016
-=======
   - Initial release
