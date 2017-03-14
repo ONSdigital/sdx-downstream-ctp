@@ -68,12 +68,9 @@ class SFTP:
             kwargs = {"stdout": subprocess.DEVNULL, "stderr": subprocess.DEVNULL}
         else:
             kwargs = {}
-            #kwargs = {"stdout": subprocess.PIPE, "stderr": subprocess.PIPE}
 
         if log is not None:
             log.debug(args)
-            for k, v in os.environ.items():
-                log.debug("{0} {1}".format(k, v))
 
         with subprocess.Popen(args, stdin=subprocess.PIPE, **kwargs) as proc:
             for cmd in cmds:
