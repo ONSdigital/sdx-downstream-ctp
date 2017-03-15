@@ -4,6 +4,7 @@
   - Add SFTP support
   - Change `nack for retry` to `nack` for SDX logging
   - Change `status_code` to `status` for SDX logging
+  - Change logging messages to add the service called or returned from
 
 ### 1.0.0 2017-02-2016
   - Initial release
