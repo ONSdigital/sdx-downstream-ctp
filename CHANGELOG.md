@@ -1,4 +1,5 @@
 ### Unreleased
+  - Log version number on startup
   - Fix handling of None responses in remote call
   - Add SFTP support
   - Change `nack for retry` to `nack` for SDX logging
