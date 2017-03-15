@@ -1,9 +1,10 @@
+from app import __version__
 from app.settings import logger
 from app.async_consumer import AsyncConsumer
 from app.helpers.request_helper import get_doc_from_store
 from .processor import CTPProcessor
 from app import settings
-from app.helpers.sdxftp import SDXFTP
+from app.helpers.sftp import SFTP
 from app.helpers.exceptions import BadMessageError, RetryableError
 
 
@@ -21,7 +22,10 @@ def get_delivery_count_from_properties(properties):
 class Consumer(AsyncConsumer):
 
     def __init__(self):
-        self._ftp = SDXFTP(logger, settings.FTP_HOST, settings.FTP_USER, settings.FTP_PASS)
+        self._ftp = SFTP(
+            logger, settings.SFTP_HOST, settings.SFTP_USER,
+            port=int(settings.SFTP_PORT), privKey=settings.SFTP_PRIVATEKEY_FILENAME
+        )
         super(Consumer, self).__init__()
 
     def on_message(self, unused_channel, basic_deliver, properties, body):
@@ -52,11 +56,11 @@ class Consumer(AsyncConsumer):
 
         except (RetryableError, Exception) as e:
             self.nack_message(basic_deliver.delivery_tag, tx_id=processor.tx_id)
-            logger.error("Failed to process", action="nack for retry", exception=e, delivery_count=delivery_count, tx_id=processor.tx_id)
+            logger.error("Failed to process", action="nack", exception=e, delivery_count=delivery_count, tx_id=processor.tx_id)
 
 
 def main():
-    logger.debug("Starting consumer")
+    logger.info("Starting consumer", version=__version__)
     consumer = Consumer()
     try:
         consumer.run()

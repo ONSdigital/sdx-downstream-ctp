@@ -1,6 +1,7 @@
 import logging
 from structlog import wrap_logger
-import os
+import os.path
+import pwd
 import requests
 from requests.packages.urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
@@ -24,6 +25,16 @@ FTP_PASS = os.getenv('CTP_FTP_PASS')
 
 FTP_FOLDER = os.getenv('CTP_FTP_FOLDER', '/')
 FTP_HEARTBEAT_FOLDER = os.getenv('CTP_FTP_HEARTBEAT_FOLDER', '/heartbeat')
+
+SFTP_HOST = os.getenv("SFTP_HOST", "127.0.0.1")
+SFTP_PORT = os.getenv("SFTP_PORT", "22")
+SFTP_USER = os.getenv('SFTP_USER', pwd.getpwuid(os.getuid())[0])
+SFTP_PRIVATEKEY_FILENAME = os.getenv(
+    "SFTP_PRIVATEKEY_FILENAME", os.path.expanduser(os.path.join("~", ".ssh", "id_rsa"))
+)
+SFTP_PUBLICKEY_FILENAME = os.getenv(
+    "SFTP_PUBLICKEY_FILENAME", os.path.expanduser(os.path.join("~", ".ssh", "id_rsa.pub"))
+)
 
 RABBIT_QUEUE = os.getenv('CTP_NOTIFICATIONS_QUEUE', 'sdx-ctp-survey-notifications')
 RABBIT_EXCHANGE = os.getenv('RABBITMQ_EXCHANGE', 'message')
