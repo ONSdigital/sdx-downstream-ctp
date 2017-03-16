@@ -1,4 +1,5 @@
 ### Unreleased
+  - Log binary filename before attempting delivery
 
 ### 2.0.0 2017-03-15
   - Log version number on startup
