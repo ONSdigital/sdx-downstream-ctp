@@ -87,6 +87,7 @@ class SFTP:
         self.port = port
 
     def deliver_binary(self, folder, filename, data):
+        self.logger.info("Delivering binary file to FTP", host=self.host, folder=folder, filename=filename)
         with tempfile.NamedTemporaryFile(dir="tmp") as locn:
             locn.write(data)
             locn.flush()
