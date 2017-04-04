@@ -1,5 +1,6 @@
 ### Unreleased
-
+  - Add environment variables to README
+  
 ### 2.0.0 2017-03-15
   - Log version number on startup
   - Fix handling of None responses in remote call
