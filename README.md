@@ -33,5 +33,5 @@ The following envioronment variables can be set:
 | FTP_HEARTBEAT_FOLDER    | `/heartbeat`                          | FTP heartbeat folder
 | RABBIT_QUEUE            | `sdx-ctp-survey-notifications`        | Rabbit queue name
 | RABBIT_EXCHANGE         | `message`                             | RabbitMQ exchange to use
-| SFTP_HOST               | `127.0.0.1`                           | SFTP host      
+| SFTP_HOST               | _xxx.x.x.x_                           | SFTP host      
 | SFTP_PORT               | `22`                                  | SFTP port
