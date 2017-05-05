@@ -25,6 +25,8 @@ def check_default_env_vars():
                 "RABBITMQ_DEFAULT_USER", "RABBITMQ_DEFAULT_PASS", "RABBITMQ_DEFAULT_VHOST", "RABBITMQ_HOST2",
                 "RABBITMQ_PORT2"]
 
+    missing_env_var = False
+
     for i in env_vars:
         try:
             _get_value(i)
