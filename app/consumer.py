@@ -10,18 +10,24 @@ import os
 import sys
 
 
+def _get_value(key):
+    value = os.getenv(key)
+    if not value:
+        raise ValueError("No value set for " + key)
+
+
 def check_default_env_vars():
 
-    env_vars = ["SDX_STORE_URL", "SDX_SEQUENCE_URL", "CTP_FTP_HOST", "CTP_FTP_USER",
-                "CTP_FTP_PASS", "CTP_FTP_FOLDER", "CTP_FTP_HEARTBEAT_FOLDER", "SFTP_HOST",
-                "SFTP_PORT", "SFTP_USER", "SFTP_PRIVATEKEY_FILENAME", "SFTP_PUBLICKEY_FILENAME",
-                "CTP_NOTIFICATIONS_QUEUE", "RABBITMQ_EXCHANGE", "RABBITMQ_HOST", "RABBITMQ_PORT",
-                "RABBITMQ_DEFAULT_USER", "RABBITMQ_DEFAULT_PASS", "RABBITMQ_DEFAULT_VHOST",
-                "RABBITMQ_HOST2", "RABBITMQ_PORT2"]
+    env_vars = ["SDX_STORE_URL", "SDX_TRANSFORM_CORA_URL", "SDX_SEQUENCE_URL", "FTP_HOST", "FTP_USER",
+                "FTP_PASS", "FTP_FOLDER", "FTP_HEARTBEAT_FOLDER", "SFTP_HOST", "CORA_NOTIFICATIONS_QUEUE",
+                "RABBITMQ_EXCHANGE", "RABBITMQ_HOST", "RABBITMQ_PORT", "RABBITMQ_DEFAULT_USER",
+                "RABBITMQ_DEFAULT_PASS", "RABBITMQ_DEFAULT_VHOST", "RABBITMQ_HOST2", "RABBITMQ_PORT2"]
 
     for i in env_vars:
-        if os.getenv(i) is None:
-            logger.error("No ", i, "env var supplied")
+        try:
+            _get_value(i)
+        except ValueError as e:
+            logger.error("Unable to start service", error=e)
             missing_env_var = True
 
     if missing_env_var is True:
