@@ -22,7 +22,7 @@ It's also possible to install within a container using docker. From the sdx-down
 
 The following envioronment variables can be set:
 
-| Environment Variable    | Default                               | Description
+| Environment Variable    | Example                               | Description
 |-------------------------|---------------------------------------|----------------
 | SDX_STORE_URL           | `http://sdx-store:5000`               | The URL of the `sdx-store` service
 | SDX_SEQUENCE_URL        | `http://sdx-sequence:5000`            | The URL of the `sdx-sequence` service

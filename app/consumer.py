@@ -6,6 +6,36 @@ from .processor import CTPProcessor
 from app import settings
 from app.helpers.sftp import SFTP
 from app.helpers.exceptions import BadMessageError, RetryableError
+import os
+import sys
+
+
+def _get_value(key):
+    value = os.getenv(key)
+    if not value:
+        raise ValueError("No value set for " + key)
+
+
+def check_default_env_vars():
+
+    env_vars = ["SDX_STORE_URL", "SDX_SEQUENCE_URL", "CTP_FTP_HOST", "CTP_FTP_USER",
+                "CTP_FTP_PASS", "CTP_FTP_FOLDER", "CTP_FTP_HEARTBEAT_FOLDER", "SFTP_HOST",
+                "SFTP_PORT", "SFTP_USER", "SFTP_PRIVATEKEY_FILENAME", "SFTP_PUBLICKEY_FILENAME",
+                "CTP_NOTIFICATIONS_QUEUE", "RABBITMQ_EXCHANGE", "RABBITMQ_HOST", "RABBITMQ_PORT",
+                "RABBITMQ_DEFAULT_USER", "RABBITMQ_DEFAULT_PASS", "RABBITMQ_DEFAULT_VHOST", "RABBITMQ_HOST2",
+                "RABBITMQ_PORT2"]
+
+    missing_env_var = False
+
+    for i in env_vars:
+        try:
+            _get_value(i)
+        except ValueError as e:
+            logger.error("Unable to start service", error=e)
+            missing_env_var = True
+
+    if missing_env_var is True:
+        sys.exit(1)
 
 
 def get_delivery_count_from_properties(properties):
@@ -61,6 +91,7 @@ class Consumer(AsyncConsumer):
 
 def main():
     logger.info("Starting consumer", version=__version__)
+    check_default_env_vars()
     consumer = Consumer()
     try:
         consumer.run()
