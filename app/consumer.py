@@ -56,8 +56,7 @@ class Consumer(AsyncConsumer):
             app_id=properties.app_id
         )
 
-        mongo_id = body.decode("utf-8")
-        document = get_doc_from_store(mongo_id)
+        document = get_doc_from_store(tx_id)
         processor = CTPProcessor(logger, document, self._ftp)
 
         try:
