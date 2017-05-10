@@ -30,6 +30,22 @@ class Consumer(AsyncConsumer):
 
     def on_message(self, unused_channel, basic_deliver, properties, body):
 
+        try:
+            tx_id = body.decode("utf-8")
+
+            logger.info("Decoded message body",
+                        delivery_tag=basic_deliver.delivery_tag,
+                        tx_id=tx_id)
+        except UnicodeDecodeError as e:
+            logger.error("Cannot decode message body",
+                         queue=self.QUEUE,
+                         delivery_tag=basic_deliver.delivery_tag,
+                         app_id=properties.app_id,
+                         error=e)
+
+            self.reject_message(basic_deliver.delivery_tag)
+            return None
+
         delivery_count = get_delivery_count_from_properties(properties)
 
         logger.info(
