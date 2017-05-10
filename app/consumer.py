@@ -40,13 +40,10 @@ class Consumer(AsyncConsumer):
             logger.error("Cannot decode message body",
                          queue=self.QUEUE,
                          delivery_tag=basic_deliver.delivery_tag,
-                         app_id=properties.app_id)
+                         app_id=properties.app_id,
+                         error=e)
 
             self.reject_message(basic_deliver.delivery_tag)
-
-            logger.error("Bad message",
-                         action="rejected",
-                         exception=e)
             return None
 
         delivery_count = get_delivery_count_from_properties(properties)
