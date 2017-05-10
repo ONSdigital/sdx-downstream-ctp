@@ -1,6 +1,7 @@
 import logging
 from structlog import wrap_logger
-import os
+import os.path
+import pwd
 import requests
 from requests.packages.urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
@@ -16,17 +17,26 @@ APP_TMP = os.path.join(APP_ROOT, 'tmp')
 
 # Default to true, cast to boolean
 SDX_STORE_URL = os.getenv("SDX_STORE_URL", "http://sdx-store:5000")
-SDX_TRANSFORM_TESTFORM_URL = os.getenv("SDX_TRANSFORM_TESTFORM_URL", "http://sdx-transform-testform:5000")
 SDX_SEQUENCE_URL = os.getenv("SDX_SEQUENCE_URL", "http://sdx-sequence:5000")
 
-FTP_HOST = os.getenv('FTP_HOST', 'pure-ftpd')
-FTP_USER = os.getenv('FTP_USER')
-FTP_PASS = os.getenv('FTP_PASS')
+FTP_HOST = os.getenv('CTP_FTP_HOST', 'pure-ftpd')
+FTP_USER = os.getenv('CTP_FTP_USER')
+FTP_PASS = os.getenv('CTP_FTP_PASS')
 
-FTP_FOLDER = os.getenv('FTP_FOLDER', '/')
-FTP_HEARTBEAT_FOLDER = os.getenv('FTP_HEARTBEAT_FOLDER', '/heartbeat')
+FTP_FOLDER = os.getenv('CTP_FTP_FOLDER', '/')
+FTP_HEARTBEAT_FOLDER = os.getenv('CTP_FTP_HEARTBEAT_FOLDER', '/heartbeat')
 
-RABBIT_QUEUE = os.getenv('RABBITMQ_QUEUE', 'sdx-ctp-survey-notifications')
+SFTP_HOST = os.getenv("SFTP_HOST", "127.0.0.1")
+SFTP_PORT = os.getenv("SFTP_PORT", "22")
+SFTP_USER = os.getenv('SFTP_USER', pwd.getpwuid(os.getuid())[0])
+SFTP_PRIVATEKEY_FILENAME = os.getenv(
+    "SFTP_PRIVATEKEY_FILENAME", os.path.expanduser(os.path.join("~", ".ssh", "id_rsa"))
+)
+SFTP_PUBLICKEY_FILENAME = os.getenv(
+    "SFTP_PUBLICKEY_FILENAME", os.path.expanduser(os.path.join("~", ".ssh", "id_rsa.pub"))
+)
+
+RABBIT_QUEUE = os.getenv('CTP_NOTIFICATIONS_QUEUE', 'sdx-ctp-survey-notifications')
 RABBIT_EXCHANGE = os.getenv('RABBITMQ_EXCHANGE', 'message')
 
 RABBIT_URL = 'amqp://{user}:{password}@{hostname}:{port}/{vhost}'.format(
