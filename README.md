@@ -35,3 +35,9 @@ The following envioronment variables can be set:
 | RABBIT_EXCHANGE         | `message`                             | RabbitMQ exchange to use
 | SFTP_HOST               | _xxx.x.x.x_                           | SFTP host      
 | SFTP_PORT               | `22`                                  | SFTP port
+
+### License
+
+Copyright © 2016, Office for National Statistics (https://www.ons.gov.uk)
+
+Released under MIT license, see [LICENSE](LICENSE) for details.
