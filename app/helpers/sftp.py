@@ -49,7 +49,7 @@ class SFTP:
         return rv
 
     @staticmethod
-    def transfer(cmds, user, host, port, privKey=None, quiet=True):
+    def transfer(cmds, user, host, port, priv_key=None, quiet=True):
         """
         Connects to an sftp server and plays a sequence of commands.
 
@@ -59,8 +59,8 @@ class SFTP:
             "-o", "ControlPath=~/.ssh/ssh-%r@%h:%p", "-b", "-", "-P", str(port),
             "{user}@{host}".format(user=user, host=host)
         ]
-        if privKey is not None:
-            args[-2:-1] = [str(port), "-i", privKey]
+        if priv_key is not None:
+            args[-2:-1] = [str(port), "-i", priv_key]
         kwargs = {"stdout": subprocess.DEVNULL, "stderr": subprocess.DEVNULL} if quiet else {}
         with subprocess.Popen(args, stdin=subprocess.PIPE, **kwargs) as proc:
             for cmd in cmds:
@@ -68,11 +68,11 @@ class SFTP:
             proc.stdin.write("bye\n".encode("utf-8"))
         return proc.returncode
 
-    def __init__(self, logger, host, user, privKey=None, port=22):
+    def __init__(self, logger, host, user, priv_key=None, port=22):
         self.logger = logger
         self.host = host
         self.user = user
-        self.privKey = privKey
+        self.priv_key = priv_key
         self.port = port
 
     def deliver_binary(self, folder, filename, data):
@@ -87,7 +87,7 @@ class SFTP:
             ]
             rv = self.transfer(
                 cmds, user=self.user, host=self.host, port=self.port,
-                privKey=self.privKey, quiet=True
+                priv_key=self.priv_key, quiet=True
             )
         if rv != 0:
             msg = "Failed to deliver file to FTP"
@@ -101,7 +101,7 @@ class SFTP:
                 cmds = self.operations(locn)
                 rv = self.transfer(
                     cmds, user=self.user, host=self.host, port=self.port,
-                    privKey=self.privKey, quiet=True
+                    priv_key=self.priv_key, quiet=True
                 )
         if rv != 0:
             msg = "Failed to deliver file to FTP"
