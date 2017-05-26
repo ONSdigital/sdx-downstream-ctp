@@ -1,11 +1,12 @@
-from app import __version__
-from app.settings import logger
-from app.async_consumer import AsyncConsumer
-from app.helpers.request_helper import get_doc_from_store
 from .processor import CTPProcessor
+from app import __version__
 from app import settings
-from app.helpers.sftp import SFTP
 from app.helpers.exceptions import BadMessageError, RetryableError
+from app.helpers.request_helper import get_doc_from_store
+from app.helpers.sftp import SFTP
+from app.settings import logger
+
+from sdx.common.async_consumer import AsyncConsumer
 
 
 def get_delivery_count_from_properties(properties):
