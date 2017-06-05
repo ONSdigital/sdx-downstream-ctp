@@ -1,6 +1,6 @@
 # sdx-downstream-ctp
 
-[![Build Status](https://travis-ci.org/ONSdigital/sdx-downstream-ctp.svg?branch=develop)](https://travis-ci.org/ONSdigital/sdx-downstream-ctp)
+[![Build Status](https://travis-ci.org/ONSdigital/sdx-downstream-ctp.svg?branch=develop)](https://travis-ci.org/ONSdigital/sdx-downstream-ctp) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/93d7f118c91941c9b5719c7e1d8cc9ac)](https://www.codacy.com/app/ons-sdc/sdx-downstream-ctp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ONSdigital/sdx-downstream-ctp&amp;utm_campaign=Badge_Grade)
 
 The sdx-downstream-ctp app is used within the Office for National Statistics (ONS) for consuming decrypted Survey Data Exchange (SDX) Surveys from sdx-store and delivering them to CTP.
 
