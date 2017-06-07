@@ -6,6 +6,6 @@ before_install:
   - git clone https://github.com/ONSdigital/sdx-common.git
   - pip3 install ./sdx-common
 install:
-  - make
+  - make build
 script:
   - make test
