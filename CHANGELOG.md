@@ -1,4 +1,6 @@
 ### Unreleased
+  - Timestamp all logs as UTC
+  - Add common library logging
   - Add environment variables to README
   - Correct license attribution
   - Add codacy badge
