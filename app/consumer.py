@@ -7,6 +7,10 @@ from app import settings
 from app.helpers.sftp import SFTP
 from app.helpers.exceptions import BadMessageError, RetryableError
 
+from sdx.common.logger_config import logger_initial_config
+
+logger_initial_config(service_name='sdx-downstream-ctp')
+
 
 def get_delivery_count_from_properties(properties):
     """
