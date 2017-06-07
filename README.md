@@ -6,13 +6,23 @@ The sdx-downstream-ctp app is used within the Office for National Statistics (ON
 
 ## Installation
 
-Using virtualenv and pip, create a new environment and install within using:
+To install, use:
 
-    $ pip install -r requirements.txt
+```bash
+make build
+```
 
-To run the tests, also install the test dependencies into a virtualenv using:
+To install using local sdx-common repo (requires SDX_HOME environment variable), use:
 
-    $ pip install -r test_requirements.txt
+```bash
+make dev
+```
+
+To run the test suite, use:
+
+```bash
+make test
+```
 
 It's also possible to install within a container using docker. From the sdx-downstream directory:
 
