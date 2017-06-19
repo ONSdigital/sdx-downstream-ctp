@@ -4,6 +4,7 @@
   - Add environment variables to README
   - Correct license attribution
   - Add codacy badge
+  - Add support for codecov to see unit test coverage
 
 ### 2.0.0 2017-03-15
   - Log version number on startup
