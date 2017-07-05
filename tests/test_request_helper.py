@@ -5,7 +5,7 @@ from app.helpers import request_helper
 
 class TestRequestHelper(unittest.TestCase):
 
-    def test_response_None(self):
+    def test_response_none(self):
         response = None
         result = request_helper.response_ok(response)
         self.assertEqual(result, False)

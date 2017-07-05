@@ -1,11 +1,12 @@
-from app import __version__
-from app.settings import logger
-from app.async_consumer import AsyncConsumer
-from app.helpers.request_helper import get_doc_from_store
 from .processor import CTPProcessor
+from app import __version__
 from app import settings
-from app.helpers.sftp import SFTP
 from app.helpers.exceptions import BadMessageError, RetryableError
+from app.helpers.request_helper import get_doc_from_store
+from app.helpers.sftp import SFTP
+from app.settings import logger
+
+from sdx.common.async_consumer import AsyncConsumer
 
 
 def get_delivery_count_from_properties(properties):
@@ -30,6 +31,22 @@ class Consumer(AsyncConsumer):
 
     def on_message(self, unused_channel, basic_deliver, properties, body):
 
+        try:
+            tx_id = body.decode("utf-8")
+
+            logger.info("Decoded message body",
+                        delivery_tag=basic_deliver.delivery_tag,
+                        tx_id=tx_id)
+        except UnicodeDecodeError as e:
+            logger.error("Cannot decode message body",
+                         queue=self.QUEUE,
+                         delivery_tag=basic_deliver.delivery_tag,
+                         app_id=properties.app_id,
+                         error=e)
+
+            self.reject_message(basic_deliver.delivery_tag)
+            return None
+
         delivery_count = get_delivery_count_from_properties(properties)
 
         logger.info(
@@ -40,8 +57,7 @@ class Consumer(AsyncConsumer):
             app_id=properties.app_id
         )
 
-        mongo_id = body.decode("utf-8")
-        document = get_doc_from_store(mongo_id)
+        document = get_doc_from_store(tx_id)
         processor = CTPProcessor(logger, document, self._ftp)
 
         try:

@@ -58,15 +58,14 @@ def get_sequence_no():
         return None
 
     result = response.json()
-    return result['sequence_no']
+    return result.get('sequence_no')
 
 
-def get_doc_from_store(mongoid):
-    store_url = "{0}/responses/{1}".format(SDX_STORE_URL, mongoid)
+def get_doc_from_store(tx_id):
+    store_url = "{0}/responses/{1}".format(SDX_STORE_URL, tx_id)
     response = remote_call(store_url)
 
     if not response_ok(response, store_url):
         return None
 
-    result = response.json()
-    return result['survey_response']
+    return response.json()
