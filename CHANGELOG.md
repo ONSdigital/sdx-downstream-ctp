@@ -1,8 +1,12 @@
 ### Unreleased
+  - Timestamp all logs as UTC
+  - Add common library logging
   - Add environment variables to README
   - Correct license attribution
   - Import async_consumer from sdx-common
-  
+  - Add codacy badge
+  - Add support for codecov to see unit test coverage
+
 ### 2.0.0 2017-03-15
   - Log version number on startup
   - Fix handling of None responses in remote call

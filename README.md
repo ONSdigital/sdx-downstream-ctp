@@ -1,18 +1,28 @@
 # sdx-downstream-ctp
 
-[![Build Status](https://travis-ci.org/ONSdigital/sdx-downstream-ctp.svg?branch=develop)](https://travis-ci.org/ONSdigital/sdx-downstream-ctp)
+[![Build Status](https://travis-ci.org/ONSdigital/sdx-downstream-ctp.svg?branch=develop)](https://travis-ci.org/ONSdigital/sdx-downstream-ctp) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/93d7f118c91941c9b5719c7e1d8cc9ac)](https://www.codacy.com/app/ons-sdc/sdx-downstream-ctp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ONSdigital/sdx-downstream-ctp&amp;utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/ONSdigital/sdx-downstream-ctp/branch/develop/graph/badge.svg)](https://codecov.io/gh/ONSdigital/sdx-downstream-ctp)
 
 The sdx-downstream-ctp app is used within the Office for National Statistics (ONS) for consuming decrypted Survey Data Exchange (SDX) Surveys from sdx-store and delivering them to CTP.
 
 ## Installation
 
-Using virtualenv and pip, create a new environment and install within using:
+To install, use:
 
-    $ pip install -r requirements.txt
+```bash
+make build
+```
 
-To run the tests, also install the test dependencies into a virtualenv using:
+To install using local sdx-common repo (requires SDX_HOME environment variable), use:
 
-    $ pip install -r test_requirements.txt
+```bash
+make dev
+```
+
+To run the test suite, use:
+
+```bash
+make test
+```
 
 It's also possible to install within a container using docker. From the sdx-downstream directory:
 
