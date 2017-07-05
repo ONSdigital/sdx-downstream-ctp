@@ -1,4 +1,5 @@
 import io
+import os
 import os.path
 import tempfile
 import subprocess
@@ -49,7 +50,7 @@ class SFTP:
         return rv
 
     @staticmethod
-    def transfer(cmds, user, host, port, privKey=None, quiet=True):
+    def transfer(cmds, user, host, port, privKey=None, quiet=True, log=None):
         """
         Connects to an sftp server and plays a sequence of commands.
 
@@ -59,13 +60,23 @@ class SFTP:
             "-o", "ControlPath=~/.ssh/ssh-%r@%h:%p", "-b", "-", "-P", str(port),
             "{user}@{host}".format(user=user, host=host)
         ]
+
         if privKey is not None:
             args[-2:-1] = [str(port), "-i", privKey]
-        kwargs = {"stdout": subprocess.DEVNULL, "stderr": subprocess.DEVNULL} if quiet else {}
+
+        if quiet:
+            kwargs = {"stdout": subprocess.DEVNULL, "stderr": subprocess.DEVNULL}
+        else:
+            kwargs = {}
+
+        if log is not None:
+            log.debug(args)
+
         with subprocess.Popen(args, stdin=subprocess.PIPE, **kwargs) as proc:
             for cmd in cmds:
                 proc.stdin.write(cmd.encode("utf-8"))
             proc.stdin.write("bye\n".encode("utf-8"))
+
         return proc.returncode
 
     def __init__(self, logger, host, user, privKey=None, port=22):
@@ -76,6 +87,7 @@ class SFTP:
         self.port = port
 
     def deliver_binary(self, folder, filename, data):
+        self.logger.info("Delivering binary file to FTP", host=self.host, folder=folder, filename=filename)
         with tempfile.NamedTemporaryFile(dir="tmp") as locn:
             locn.write(data)
             locn.flush()
@@ -86,7 +98,7 @@ class SFTP:
             ]
             rv = self.transfer(
                 cmds, user=self.user, host=self.host, port=self.port,
-                privKey=self.privKey, quiet=True
+                privKey=self.privKey, quiet=False, log=self.logger
             )
         if rv != 0:
             msg = "Failed to deliver file to FTP"
@@ -100,7 +112,7 @@ class SFTP:
                 cmds = self.operations(locn)
                 rv = self.transfer(
                     cmds, user=self.user, host=self.host, port=self.port,
-                    privKey=self.privKey, quiet=True
+                    privKey=self.privKey, quiet=False, log=self.logger
                 )
         if rv != 0:
             msg = "Failed to deliver file to FTP"
