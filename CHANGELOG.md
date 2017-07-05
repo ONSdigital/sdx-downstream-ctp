@@ -7,6 +7,7 @@
   - Add codacy badge
   - Add support for codecov to see unit test coverage 
   - Add logging binary filename before attempting delivery
+  - Fix incorrect git merge in Dockerfile and requirements.txt
 
 ### 2.0.0 2017-03-15
   - Log version number on startup
