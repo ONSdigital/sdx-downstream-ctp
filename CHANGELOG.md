@@ -1,11 +1,12 @@
 ### Unreleased
-  - Timestamp all logs as UTC
+  - Update timestamp in all logs as UTC
+  - Update to use async_consumer from sdx-common
   - Add common library logging
   - Add environment variables to README
-  - Correct license attribution
-  - Import async_consumer from sdx-common
+  - Add correct license attribution
   - Add codacy badge
-  - Add support for codecov to see unit test coverage
+  - Add support for codecov to see unit test coverage 
+  - Add logging binary filename before attempting delivery
 
 ### 2.0.0 2017-03-15
   - Log version number on startup
