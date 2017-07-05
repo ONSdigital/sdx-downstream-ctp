@@ -3,6 +3,7 @@
   - Add common library logging
   - Add environment variables to README
   - Correct license attribution
+  - Import async_consumer from sdx-common
   - Add codacy badge
   - Add support for codecov to see unit test coverage
 
