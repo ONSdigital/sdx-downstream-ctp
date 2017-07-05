@@ -2,4 +2,4 @@
 > What does this pull request change/fix? Why was it nessessary?
 
 ## Checklist
-  * CHANGELOG.md updated?
+  - CHANGELOG.md updated?
