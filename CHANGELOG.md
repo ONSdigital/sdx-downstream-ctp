@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 2.1.0 2017-07-10
   - Update timestamp in all logs as UTC
   - Update to use async_consumer from sdx-common
   - Add common library logging
