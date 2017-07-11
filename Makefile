@@ -18,8 +18,3 @@ test:
 
 start:
 	./startup.sh
-
-check-env:
-ifeq ($(SDX_HOME),)
-	$(error SDX_HOME is not set)
-endif

@@ -1,4 +1,5 @@
 ### Unreleased
+  - Remove SDX_HOME variable in makefile and add release tag to travis sdx-common clone
 
 ### 2.1.0 2017-07-10
   - Update timestamp in all logs as UTC
@@ -7,7 +8,7 @@
   - Add environment variables to README
   - Add correct license attribution
   - Add codacy badge
-  - Add support for codecov to see unit test coverage 
+  - Add support for codecov to see unit test coverage
   - Add logging binary filename before attempting delivery
   - Fix incorrect git merge in Dockerfile and requirements.txt
 
