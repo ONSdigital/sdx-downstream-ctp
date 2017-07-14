@@ -1,5 +1,5 @@
 ### Unreleased
-  - Remove SDX_HOME variable in makefile and add release tag to travis sdx-common clone
+  - Remove SDX_HOME variable in makefile and add release tag to sdx-common clone
 
 ### 2.1.0 2017-07-10
   - Update timestamp in all logs as UTC
