@@ -1,4 +1,5 @@
 ### Unreleased
+  - Remove SDX_HOME variable in makefile and add release tag to sdx-common clone
   - Change all instances of ADD to COPY in Dockerfile
 
 ### 2.1.0 2017-07-10
@@ -8,7 +9,7 @@
   - Add environment variables to README
   - Add correct license attribution
   - Add codacy badge
-  - Add support for codecov to see unit test coverage 
+  - Add support for codecov to see unit test coverage
   - Add logging binary filename before attempting delivery
   - Fix incorrect git merge in Dockerfile and requirements.txt
 
