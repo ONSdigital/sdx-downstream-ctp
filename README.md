@@ -1,3 +1,6 @@
+
+>**DEPRECATED** Please note that this repository is no longer used and will likely be removed at some point in the future. The information in this readme may be out of date or possibly misleading and should not be relied upon.
+
 # sdx-downstream-ctp
 
 [![Build Status](https://travis-ci.org/ONSdigital/sdx-downstream-ctp.svg?branch=develop)](https://travis-ci.org/ONSdigital/sdx-downstream-ctp) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/93d7f118c91941c9b5719c7e1d8cc9ac)](https://www.codacy.com/app/ons-sdc/sdx-downstream-ctp?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ONSdigital/sdx-downstream-ctp&amp;utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/ONSdigital/sdx-downstream-ctp/branch/develop/graph/badge.svg)](https://codecov.io/gh/ONSdigital/sdx-downstream-ctp)
